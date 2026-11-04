@@ -1,0 +1,7 @@
+Flask
+pyTelegramBotAPI
+supabase
+python-dotenv
+APScheduler
+gunicorn
+tzdata
