@@ -65,11 +65,12 @@ function hap(t){try{tg.HapticFeedback.notificationOccurred(t)}catch(e){}}
 function num(s){s=String(s||"").replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[,٬،\s]/g,"").toLowerCase();var m=s.match(/^(\d+(?:\.\d+)?)(k|m|کا|ک|میلیون|میل)?$/);if(!m)return 0;var u={k:1e3,"کا":1e3,"ک":1e3,m:1e6,"میلیون":1e6,"میل":1e6}[m[2]]||1;return Math.round(m[1]*u)}
 function api(p,b){return fetch(p,{method:"POST",headers:{"Content-Type":"application/json","X-Init-Data":tg?tg.initData:""},body:JSON.stringify(b||{})}).then(function(r){return r.json()}).catch(function(){return{ok:false,err:"ارتباط با سرور برقرار نشد"}})}
 function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
-function artEl(c){return'<div class="art" data-c="'+c+'"><img src="/api/art/'+c+'?t=1" alt="🎁" onerror="this.onerror=null;this.parentNode.textContent=&quot;🎁&quot;"></div>'}
-function loadArt(root){var live=!!(root&&root.id=="sb");if(!live)return;(root||document).querySelectorAll(".art[data-c]").forEach(function(el){var c=el.dataset.c;delete el.dataset.c;
+function artEl(c){return'<div class="art" data-c="'+c+'">🎁</div>'}
+function loadArt(root){var live=!!(root&&root.id=="sb");(root||document).querySelectorAll(".art[data-c]").forEach(function(el){var c=el.dataset.c;delete el.dataset.c;
  fetch("/api/art/"+c).then(function(r){if(!r.ok)throw 0;var t=r.headers.get("content-type")||"";
-  if(t.indexOf("json")>-1)return r.json().then(function(j){el.textContent="";var an=lottie.loadAnimation({container:el,renderer:"svg",loop:true,autoplay:live,animationData:j});if(!live)an.goToAndStop(90,true)});
-  return r.blob().then(function(b){var u=URL.createObjectURL(b);el.innerHTML=t.indexOf("video")>-1?'<video src="'+u+'" autoplay loop muted playsinline></video>':'<img src="'+u+'" alt="">'})}).catch(function(){})})}
+  if(t.indexOf("json")>-1)return r.json().then(function(j){if(!window.lottie)throw 0;el.textContent="";var an=lottie.loadAnimation({container:el,renderer:"svg",loop:live,autoplay:live,animationData:j});if(!live)an.addEventListener("DOMLoaded",function(){an.goToAndStop(90,true)})});
+  return r.blob().then(function(b){var u=URL.createObjectURL(b);if(t.indexOf("video")>-1){el.innerHTML='<video src="'+u+'" muted playsinline preload="auto"></video>';var v=el.querySelector("video");v.addEventListener("loadeddata",function(){if(live){v.play().catch(function(){})}else{v.pause();try{v.currentTime=0.1}catch(e){}}},{once:true})}else{el.innerHTML='<img src="'+u+'" alt="">'}})
+ }).catch(function(){el.textContent="🎁"})})}
 function card(x,mode){var h=hue(x.type);return'<div class="g" data-id="'+x.id+'" data-m="'+mode+'" style="background:radial-gradient(circle at 50% 30%,hsl('+h+' 45% 28%),hsl('+h+' 35% 12%))">'+(x.price?'<span class="tag">'+(mode=="mk"?"فروش فوری":"برای فروش")+'</span>':"")+artEl(x.code)+'<b>'+esc(x.model)+'</b><small>'+esc(x.type)+' · #'+f(x.tag)+'</small><div class="pr">💎 '+f(x.price||x.value)+'</div></div>'}
 function nav(){$("nav").innerHTML=[["acc","👤","حساب کاربری"],["gift","🎁","گیفت"],["bank","🏦","بانک"]].map(function(t){return'<button data-t="'+t[0]+'" class="'+(tab==t[0]?"on":"")+'"><i>'+t[1]+'</i>'+t[2]+'</button>'}).join("")}
 function head(){$("bal").textContent="💎 "+f(ME.balance)}
