@@ -50,8 +50,8 @@ nav button i{display:block;font-style:normal;font-size:21px;line-height:1.2}nav 
 .pl{display:flex;align-items:center;gap:10px}.pl small{display:block;color:var(--mut)}
 .bn{position:relative;height:128px;border-radius:30px;padding:16px 20px;margin-bottom:14px;overflow:hidden;display:flex;align-items:flex-end;border:1px solid rgba(255,255,255,.18)}
 .bn b{font-size:30px;font-weight:800;letter-spacing:.5px;position:relative}
-.bn.tr{background:linear-gradient(135deg,#34d399,#0f766e);cursor:pointer}.btn.up{background:linear-gradient(135deg,#22c55e,#16a34a)}.btn.dn{background:linear-gradient(135deg,#ef4444,#b91c1c)}
-.bn.rk{background:linear-gradient(135deg,#7fb3f5,#3d79d6);cursor:pointer}.bn.off{background:#2a2d38;color:#8d93a8}
+
+.bn.rk{background:linear-gradient(135deg,#7fb3f5,#3d79d6);cursor:pointer}.bn.wh{background:linear-gradient(135deg,#f472b6,#7c3aed);cursor:pointer}.bn .pie{position:absolute;left:22px;top:18px;width:92px;height:92px;border-radius:50%;border:4px solid rgba(255,255,255,.4);background:conic-gradient(#fbbf24 0 38%,#34d399 0 63%,#60a5fa 0 100%)}.wl{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;min-height:30px;align-items:center}.wchip{display:inline-flex;align-items:center;gap:6px;font-style:normal;border:2px solid;border-radius:14px;padding:1px 10px;font-weight:700;font-size:13px;background:rgba(255,255,255,.04)}.wchip u{width:10px;height:10px;border-radius:50%;display:inline-block}.wchip.me{background:rgba(255,255,255,.14)}.bn.off{background:#2a2d38;color:#8d93a8}
 .bn .bt1{position:absolute;top:14px;right:16px;background:#fff;color:#e27a3a;border-radius:14px;padding:2px 12px;font-weight:800;font-size:13px}.bn.off .bt1{background:#3b3f4d;color:#aeb4c8}
 .bn .big{position:absolute;left:18px;top:8px;font-size:84px;line-height:1;transform:rotate(-8deg)}
 .bn .ch{position:absolute;font-style:normal;background:#22c55e;color:#fff;font-weight:800;font-size:15px;padding:0 10px;border-radius:9px}
@@ -84,11 +84,11 @@ function loadArt(root,force,play){var live=!!(root&&root.id=="sb")||!!play;if(!l
   if(t.indexOf("json")>-1)return r.json().then(function(j){el.textContent="";var an=lottie.loadAnimation({container:el,renderer:"svg",loop:true,autoplay:live,animationData:j});el._an=an;if(!live)an.goToAndStop(90,true)});
   return r.blob().then(function(b){var u=URL.createObjectURL(b);el.innerHTML=t.indexOf("video")>-1?'<video src="'+u+'" autoplay loop muted playsinline></video>':'<img src="'+u+'" alt="">'})}).catch(function(){})})}
 function card(x,mode){var h=hue(x.type);return'<div class="g" data-id="'+x.id+'" data-m="'+mode+'" style="background:radial-gradient(circle at 50% 30%,hsl('+h+' 45% 28%),hsl('+h+' 35% 12%))">'+(x.price?'<span class="tag">'+(mode=="mk"?"فروش فوری":"برای فروش")+'</span>':"")+artEl(x.code)+'<b>'+esc(x.model)+'</b><small>'+esc(x.type)+' · #'+f(x.tag)+'</small><div class="pr">💵 '+f(x.price||x.value)+'</div></div>'}
-function nav(){$("nav").innerHTML=[["acc","👤","حساب کاربری"],["games","🎮","بازی‌ها"],["gift","🎁","گیفت"],["bank","🏦","بانک"]].map(function(t){return'<button data-t="'+t[0]+'" class="'+(tab==t[0]||((tab=="rocket"||tab=="trade")&&t[0]=="games")?"on":"")+'"><i>'+t[1]+'</i>'+t[2]+'</button>'}).join("")}
+function nav(){$("nav").innerHTML=[["acc","👤","حساب کاربری"],["games","🎮","بازی‌ها"],["gift","🎁","گیفت"],["bank","🏦","بانک"]].map(function(t){return'<button data-t="'+t[0]+'" class="'+(tab==t[0]||((tab=="rocket"||tab=="wheel")&&t[0]=="games")?"on":"")+'"><i>'+t[1]+'</i>'+t[2]+'</button>'}).join("")}
 function head(){$("bal").textContent="💵 "+f(ME.balance)}
 function load(){return api("/api/me").then(function(m){if(m.ok===false){$("app").innerHTML='<div class="empty">'+esc(m.err)+'</div>';return}ME=m;head()})}
-function go(){nav();head();var h=$("app");if(tab!="rocket")RK.run=false;if(tab!="trade")TR.run=false;if(tab=="trade"){tradeView();return}
- if(tab=="games"){h.innerHTML='<div class="bn rk" data-g="rocket"><span class="bt1">🔥 پرطرفدار</span><i class="ch" style="top:14px;left:34%;transform:rotate(14deg)">×2.80</i><i class="ch" style="top:96px;left:30%;transform:rotate(8deg)">×1.17</i><i class="ch" style="top:56px;left:8%;transform:rotate(-12deg)">×1.42</i><span class="big">🚀</span><b>موشک</b></div><div class="bn tr" data-g="trade"><span class="bt1">جدید</span><i class="ch" style="top:16px;left:34%;transform:rotate(-8deg)">▲ ۱.۹×</i><i class="ch" style="top:84px;left:12%;background:#ef4444;transform:rotate(10deg)">▼ ۱.۹×</i><span class="big">📈</span><b>ترید</b></div>';return}
+function go(){nav();head();var h=$("app");if(tab!="rocket")RK.run=false;if(tab!="wheel")WH.run=false;if(tab=="wheel"){wheelView();return}
+ if(tab=="games"){h.innerHTML='<div class="bn rk" data-g="rocket"><span class="bt1">🔥 پرطرفدار</span><i class="ch" style="top:14px;left:34%;transform:rotate(14deg)">×2.80</i><i class="ch" style="top:96px;left:30%;transform:rotate(8deg)">×1.17</i><i class="ch" style="top:56px;left:8%;transform:rotate(-12deg)">×1.42</i><span class="big">🚀</span><b>موشک</b></div><div class="bn wh" data-g="wheel"><span class="bt1">جدید</span><i class="pie"></i><b>دایره</b></div>';return}
  if(tab=="rocket"){rocketView();return}
  if(tab=="acc"){h.innerHTML='<div class="card hero"><h2>'+esc(ME.name||"کاربر")+'</h2><p>'+(ME.username?"@"+esc(ME.username)+" · ":"")+'ID '+ME.id+'</p></div><div class="card"><div class="row"><span>موجودی کیف پول</span><b>💵 '+f(ME.balance)+'</b></div><div class="row"><span>موجودی بانک</span><b>🏦 '+f(ME.bank)+'</b></div><div class="row"><span>تعداد گیفت‌ها</span><b>'+f(ME.gifts)+' از '+f(ME.slots)+'</b></div><div class="row"><span>ارزش کل گیفت‌ها</span><b>💵 '+f(ME.worth)+'</b></div><div class="row"><span>در حال فروش</span><b>'+f(ME.selling)+'</b></div></div>';return}
  if(tab=="bank"){bankView();return}
@@ -118,7 +118,7 @@ function detail(x,m){var mine=m=="my"||x.mine;
  var h=hue(x.type);sheet('<div class="g" style="background:radial-gradient(circle at 50% 30%,hsl('+h+' 45% 28%),hsl('+h+' 35% 12%))">'+artEl(x.code)+'<b style="font-size:18px">'+esc(x.model)+'</b><small>'+esc(x.type)+' · #'+f(x.tag)+'</small></div><div class="card" style="padding:4px 14px">'+rows+'</div><div id="own"></div>'+act);ownerCard(x.owner_id)}
 function ownerCard(i){api("/api/owner",{id:i}).then(function(o){var el=$("own");if(!el||!o.ok)return;var nm=o.name||(o.user?"@"+o.user:"کاربر");el.innerHTML='<div class="own" data-u="'+esc(o.user)+'"><div class="av">'+esc(nm.charAt(0))+'<img src="/api/avatar/'+o.id+'" onerror="this.remove()" alt=""></div><div><small>مالک گیفت</small><b>'+esc(nm)+'</b><small dir="ltr">'+(o.user?"@"+esc(o.user)+" · ":"")+'ID '+o.id+'</small></div></div>'})}
 document.addEventListener("click",function(e){var el=e.target.closest("[data-t],[data-s],[data-a],.g[data-id],.own[data-u],[data-g]");if(!el)return;var d=el.dataset;
- if(d.a=="tup"||d.a=="tdn"){tAct(d.a,el);return}if(d.g){tab=d.g;go();window.scrollTo(0,0);return}if(d.a=="gback"){tab="games";go();return}if(d.a=="rbet"||d.a=="rcash"){rkAct(d.a,el);return}
+ if(d.a=="wbet"){wAct(el);return}if(d.g){tab=d.g;go();window.scrollTo(0,0);return}if(d.a=="gback"){tab="games";go();return}if(d.a=="rbet"||d.a=="rcash"){rkAct(d.a,el);return}
  if(el.className=="own"){if(d.u&&tg)tg.openTelegramLink("https://t.me/"+d.u);return}
  if(d.t){tab=d.t;go();window.scrollTo(0,0);return}
  if(d.s){sub=d.s;go();return}
@@ -171,38 +171,33 @@ function draw(t){if(!RK.run||t!=RK.tok)return;var c=$("cv"),s=RK.st;if(c&&s){var
   else{if(bm&&bm.firstChild){vis(bm,true);bm.style.left=(cx-70)+"px";bm.style.top=(cy-70)+"px"}else{x.font="76px serif";x.fillText("💥",cx,cy)}}
   x.font="800 "+(m>=100?54:66)+"px Vazirmatn,sans-serif";x.fillStyle=ph=="crash"?"#f87171":cl;x.fillText(m.toFixed(2)+"×",w/2,h*.2);if(ph=="crash"){x.font="600 15px Vazirmatn,sans-serif";x.fillText("موشک منفجر شد!",w/2,h*.2+44)}}}
  rkBtn();requestAnimationFrame(function(){draw(t)})}
-var TR={st:null,at:0,run:false,k:"",sig:"",hold:0,tok:0};
-function tradeView(){TR.st=null;TR.k="";TR.sig="";$("app").innerHTML='<div class="seg"><button data-a="gback" style="flex:none;padding:10px 18px">‹ بازی‌ها</button><button class="on" style="cursor:default">📈 ترید</button></div><div class="card" style="padding:8px"><canvas id="tc" style="width:100%;height:270px;display:block"></canvas><div id="thist" class="hist"></div></div><div class="card"><div class="tools"><input id="ta" inputmode="numeric" placeholder="مبلغ شرط (حداقل ۱، مثلاً ۵۰۰k)"></div><div id="ts" style="text-align:center;color:var(--mut);margin-bottom:10px">…</div><div class="grid"><button id="tbu" class="btn up" data-a="tup">▲ بالا</button><button id="tbd" class="btn dn" data-a="tdn">▼ پایین</button></div></div><div id="tpl"><div class="card empty">…</div></div>';var t=++TR.tok;TR.run=true;tpoll(t);tdraw(t)}
-function tpoll(t){if(!TR.run||t!=TR.tok)return;api("/api/trade/state").then(function(s){if(!TR.run||t!=TR.tok)return;if(s.ok){if(performance.now()<TR.hold&&TR.st&&TR.st.mine&&!s.mine)s.mine=TR.st.mine;TR.st=s;TR.at=performance.now();ME.balance=s.balance;head();tUI(s)}}).then(function(){setTimeout(function(){tpoll(t)},300)})}
-function tUI(s){var sig=JSON.stringify([s.bets,s.phase,s.hist]);if(sig==TR.sig)return;TR.sig=sig;
- $("thist").innerHTML=s.hist.map(function(v){var c=v.res=="up"?"#22c55e":v.res=="down"?"#ef4444":"#8a91ab";return'<i style="color:'+c+';border-color:'+c+'">'+(v.res=="up"?"▲ +":v.res=="down"?"▼ ":"= ")+v.pct.toFixed(2)+'%</i>'}).join("");
- var rk=function(b){return s.phase!="end"?1:b.res=="win"?0:b.res=="tie"?1:2};
- var o=s.bets.slice().sort(function(a,b){return rk(a)-rk(b)||(b.win-a.win)||(b.amount-a.amount)});
- $("tpl").innerHTML=o.length?o.map(function(b){var r=rk(b),ar=b.dir=="up"?'<b style="color:#22c55e">▲</b>':'<b style="color:#ef4444">▼</b>';return'<div class="pl'+(s.phase=="end"?(b.res=="win"?" win":b.res=="lose"?" lose":""):"")+'"><div class="av" style="width:40px;height:40px;font-size:16px">'+esc(b.name.charAt(0))+'<img src="/api/avatar/'+b.id+'" onerror="this.remove()" alt=""></div><div style="flex:1"><b>'+esc(b.name)+'</b><small>💵 '+f(b.amount)+'</small></div>'+ar+(s.phase=="end"?(b.res=="win"?'<b style="color:#93c5fd;margin-right:8px">+'+f(b.win)+'</b>':b.res=="lose"?'<b style="color:var(--bad);margin-right:8px">−'+f(b.amount)+'</b>':'<b style="margin-right:8px">=</b>'):"")+'</div>'}).join(""):'<div class="card empty">هنوز کسی شرط نبسته</div>'}
-function tBtn(){var s=TR.st;if(!s||!$("ts"))return;var m=s.mine,ph=s.phase,t,dis=ph!="wait"||!!m,dn=m?(m.dir=="up"?"▲ بالا":"▼ پایین")+" · 💵 "+f(m.amount):"";
- if(ph=="wait")t=m?"شرط ثبت شد: "+dn:"جهت قیمت رو انتخاب کن (برد "+s.payout+"×)";
- else if(ph=="run")t=m?"شرط تو: "+dn+" — منتظر پایان راند":"راند در حال اجراست؛ منتظر راند بعدی…";
- else t=m?(m.res=="win"?"بردی ✅ +"+f(m.win)+" 💵":m.res=="tie"?"مساوی شد؛ پولت برگشت":"باختی 💥"):"راند تموم شد";
- var k=t+dis;if(TR.k!=k){TR.k=k;$("ts").textContent=t;$("tbu").disabled=dis;$("tbd").disabled=dis}}
-function tAct(a,b){var amt=num($("ta").value),dr=a=="tup"?"up":"down";if(!amt){toast("مبلغ معتبر وارد کن");return}
- var old=TR.st&&TR.st.mine;if(TR.st)TR.st.mine={dir:dr,amount:amt,win:0,res:""};TR.k="";TR.hold=performance.now()+1800;tap();
- api("/api/trade/bet",{amount:amt,dir:dr}).then(function(r){TR.k="";if(r.ok){hap("success");toast("شرط ثبت شد 📈")}else{TR.hold=0;if(TR.st)TR.st.mine=old;hap("error");toast(r.err||"خطا")}})}
-function tdraw(t){if(!TR.run||t!=TR.tok)return;var c=$("tc"),s=TR.st;if(c&&s){var d=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight,x,i,tp=s.tape,n=tp.length,now=performance.now(),ph=s.phase,run=ph!="wait";
- x=cvs(c,w,h,d);x.textBaseline="middle";
- var lo=Math.min.apply(null,tp),hi=Math.max.apply(null,tp);if(run){lo=Math.min(lo,s.p0);hi=Math.max(hi,s.p0)}var pd=(hi-lo)*.2||1;lo-=pd;hi+=pd;
- var top=72,X=function(j){return 8+(w-16)*(100-n+j)/99},Y=function(v){return top+(h-top-14)*(1-(v-lo)/(hi-lo))};
- var last=tp[n-1],up=run?last>=s.p0:true,cl=!run?"#8ea2ff":up?"#22c55e":"#ef4444";
- x.strokeStyle="rgba(255,255,255,.06)";x.lineWidth=1;for(i=0;i<4;i++){x.beginPath();x.moveTo(0,top+(h-top-14)*i/3);x.lineTo(w,top+(h-top-14)*i/3);x.stroke()}
- var g=x.createLinearGradient(0,top,0,h);g.addColorStop(0,cl+"55");g.addColorStop(1,cl+"00");
- x.beginPath();tp.forEach(function(v,j){j?x.lineTo(X(j),Y(v)):x.moveTo(X(j),Y(v))});x.lineTo(X(n-1),h);x.lineTo(X(0),h);x.closePath();x.fillStyle=g;x.fill();
- x.lineWidth=3;x.lineJoin="round";x.strokeStyle=cl;x.shadowColor=cl;x.shadowBlur=10;x.beginPath();tp.forEach(function(v,j){j?x.lineTo(X(j),Y(v)):x.moveTo(X(j),Y(v))});x.stroke();x.shadowBlur=0;
- if(run){x.setLineDash([6,5]);x.strokeStyle="#fbbf24";x.lineWidth=1.5;x.beginPath();x.moveTo(0,Y(s.p0));x.lineTo(w,Y(s.p0));x.stroke();var mx=X(Math.max(0,n-1-s.run_n));x.beginPath();x.moveTo(mx,top-6);x.lineTo(mx,h);x.stroke();x.setLineDash([]);x.fillStyle="#fbbf24";x.font="600 12px Vazirmatn,sans-serif";x.textAlign="left";x.fillText("ورود "+s.p0.toFixed(2),Math.min(mx+6,w-100),Y(s.p0)-9)}
- x.fillStyle="#fff";x.beginPath();x.arc(X(n-1),Y(last),5,0,7);x.fill();
- x.textAlign="left";x.fillStyle="#eef1fb";x.font="800 38px Vazirmatn,sans-serif";x.fillText(last.toFixed(2),14,26);
- if(run){var pc=(last-s.p0)/s.p0*100;x.font="700 15px Vazirmatn,sans-serif";x.fillStyle=cl;x.fillText((pc>=0?"▲ +":"▼ ")+pc.toFixed(2)+"%",14,56)}
- var left=Math.max(0,s.left-(now-TR.at)/1000);x.textAlign="right";x.font="700 16px Vazirmatn,sans-serif";x.fillStyle="#8a91ab";x.fillText(ph=="wait"?"شروع تا "+f(Math.ceil(left))+" ثانیه":ph=="run"?"پایان تا "+f(Math.ceil(left))+" ثانیه":"پایان راند",w-14,26);
- if(ph=="end"){x.textAlign="center";x.font="800 32px Vazirmatn,sans-serif";x.fillStyle=s.res=="up"?"#22c55e":s.res=="down"?"#ef4444":"#8a91ab";x.fillText(s.res=="up"?"رشد ▲":s.res=="down"?"افت ▼":"بدون تغییر",w/2,h*.5)}}
- tBtn();requestAnimationFrame(function(){tdraw(t)})}
+var WH={st:null,at:0,run:false,k:"",sig:"",hold:0,tok:0};
+function wcol(i){return"hsl("+Math.round((i*137.508)%360)+",72%,58%)"}
+function wpc(x){return Number(x).toLocaleString("fa-IR",{maximumFractionDigits:1})+"٪"}
+function wheelView(){WH.st=null;WH.k="";WH.sig="";$("app").innerHTML='<div class="seg"><button data-a="gback" style="flex:none;padding:10px 18px">‹ بازی‌ها</button><button class="on" style="cursor:default">🎯 دایره</button></div><div class="card" style="padding:12px"><div id="wl" class="wl"></div><canvas id="wc" style="width:100%;height:300px;display:block"></canvas><div id="wst" style="text-align:center;font-weight:800;margin-top:6px">…</div></div><div class="card"><div class="tools"><input id="wa" inputmode="numeric" placeholder="مبلغ (حداقل ۱، مثلاً ۵۰۰k)"></div><div id="wpv" style="text-align:center;color:var(--mut);margin-bottom:10px">هر چی مبلغ بیشتر، بخش بزرگ‌تری از دایره مال توئه</div><button id="wb" class="btn mint" data-a="wbet">ثبت و گرفتن بخش دایره</button></div>';$("wa").addEventListener("input",wPrev);var t=++WH.tok;WH.run=true;wpoll(t);wdraw(t)}
+function wpoll(t){if(!WH.run||t!=WH.tok)return;api("/api/wheel/state").then(function(s){if(!WH.run||t!=WH.tok)return;if(s.ok){if(performance.now()<WH.hold&&WH.st&&WH.st.mine&&!s.mine)s.mine=WH.st.mine;WH.st=s;WH.at=performance.now();ME.balance=s.balance;head();wUI(s)}}).then(function(){setTimeout(function(){wpoll(t)},500)})}
+function wUI(s){var sig=JSON.stringify([s.bets,s.phase,s.win]);if(sig==WH.sig)return;WH.sig=sig;var tot=s.total||1;$("wl").innerHTML=s.bets.length?s.bets.slice().sort(function(a,b){return b.amount-a.amount}).map(function(b){var c=wcol(b.ci);return'<i class="wchip'+(b.id==ME.id?" me":"")+'" style="border-color:'+c+'"><u style="background:'+c+'"></u>'+esc(b.name)+' · '+wpc(b.amount/tot*100)+'</i>'}).join(""):'<span style="color:var(--mut)">هنوز کسی توکن نذاشته</span>';wPrev()}
+function wPrev(){var s=WH.st,e=$("wpv");if(!s||!e)return;var m=s.mine,amt=m?m.amount:num($("wa").value),inc=s.bets.some(function(b){return b.id==ME.id}),t;if(m)t="سهم تو: "+wpc(amt/(inc?s.total:s.total+amt)*100)+" از دایره";else if(amt)t="با این مبلغ سهمت می‌شه "+wpc(amt/(s.total+amt)*100);else t="هر چی مبلغ بیشتر، بخش بزرگ‌تری از دایره مال توئه";if(e.textContent!=t)e.textContent=t}
+function wBtn(){var s=WH.st;if(!s||!$("wst"))return;var m=s.mine,ph=s.phase,n=s.bets.length,left=Math.max(0,s.left-(performance.now()-WH.at)/1000),t,w;
+ if(ph=="wait")t=n==0?"منتظر اولین نفر… ("+f(Math.ceil(left))+" ثانیه)":n==1?"اگه کسی نیاد GUGU BET هم‌مبلغ می‌ذاره · "+f(Math.ceil(left))+" ثانیه":"چرخش تا "+f(Math.ceil(left))+" ثانیه دیگه";
+ else if(ph=="spin")t="در حال چرخش…";
+ else if(s.res=="refund")t="این راند کسی شرکت نکرد";
+ else{w=s.bets.filter(function(b){return b.id==s.win})[0];t=s.win==ME.id?"تو بردی! 🎉 +"+f(s.pay):(w?w.name:"؟")+" برنده شد 🎉 +"+f(s.pay)}
+ var dis=ph!="wait"||!!m,lab=m?"بخشت ثبت شد ✓":ph!="wait"?"منتظر راند بعد…":"ثبت و گرفتن بخش دایره",k=t+"|"+lab+dis;if(WH.k!=k){WH.k=k;$("wst").textContent=t;$("wb").textContent=lab;$("wb").disabled=dis}}
+function wAct(b){var amt=num($("wa").value),old=WH.st&&WH.st.mine;if(!amt){toast("مبلغ معتبر وارد کن");return}if(WH.st)WH.st.mine={amount:amt};WH.k="";WH.hold=performance.now()+1800;tap();wPrev();
+ api("/api/wheel/bet",{amount:amt}).then(function(r){WH.k="";if(r.ok){hap("success");toast("بخشت از دایره ثبت شد 🎯")}else{WH.hold=0;if(WH.st)WH.st.mine=old;hap("error");toast(r.err||"خطا")}wPrev()})}
+function wdraw(t){if(!WH.run||t!=WH.tok)return;var c=$("wc"),s=WH.st;if(c&&s){var d=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight,x=cvs(c,w,h,d),cx=w/2,cy=h/2+8,R=Math.min(w/2,h/2)-22,r0=R*.42,now=performance.now(),tot=s.total,b=s.bets,ph=s.phase,TAU=Math.PI*2,i,a0,an,mid,rr,rot=0;
+  if(tot>0&&(ph=="spin"||ph=="end")&&s.win!=null){var cum=0,p=0,pr;for(i=0;i<b.length;i++){if(b[i].id==s.win){p=(cum+s.off*b[i].amount)/tot;break}cum+=b[i].amount}
+   pr=ph=="end"?1:Math.min(1,Math.max(0,1-Math.max(0,s.spin_left-(now-WH.at)/1000)/s.spin));rot=(TAU*5+TAU*(1-p))*(1-Math.pow(1-pr,3))}
+  if(!(tot>0)){x.beginPath();x.arc(cx,cy,R,0,TAU);x.arc(cx,cy,r0,TAU,0,true);x.fillStyle="#1a2033";x.fill()}
+  else{a0=-Math.PI/2+rot;for(i=0;i<b.length;i++){an=b[i].amount/tot*TAU;x.globalAlpha=ph=="end"&&b[i].id!=s.win?.35:1;x.beginPath();x.arc(cx,cy,R,a0,a0+an);x.arc(cx,cy,r0,a0+an,a0,true);x.closePath();x.fillStyle=wcol(b[i].ci);x.fill();x.lineWidth=b[i].id==ME.id?4:2;x.strokeStyle=b[i].id==ME.id?"#fff":"#111522";x.stroke();
+    if(an>.35){mid=a0+an/2;rr=(R+r0)/2;x.font="700 14px Vazirmatn,sans-serif";x.fillStyle="#fff";x.shadowColor="rgba(0,0,0,.6)";x.shadowBlur=4;x.fillText(wpc(b[i].amount/tot*100),cx+Math.cos(mid)*rr,cy+Math.sin(mid)*rr+5);x.shadowBlur=0}
+    a0+=an}x.globalAlpha=1}
+  x.fillStyle="#eef1fb";x.textAlign="center";
+  if(ph=="wait"){x.font="800 30px Vazirmatn,sans-serif";x.fillText(f(Math.ceil(Math.max(0,s.left-(now-WH.at)/1000))),cx,cy+2);x.font="600 12px Vazirmatn,sans-serif";x.fillStyle="#8a91ab";x.fillText("جمع: "+f(tot),cx,cy+24)}
+  else{x.font="600 12px Vazirmatn,sans-serif";x.fillStyle="#8a91ab";x.fillText("جایزه",cx,cy-8);x.font="800 20px Vazirmatn,sans-serif";x.fillStyle="#eef1fb";x.fillText(f(s.pay),cx,cy+16)}
+  x.beginPath();x.moveTo(cx-11,cy-R-16);x.lineTo(cx+11,cy-R-16);x.lineTo(cx,cy-R+6);x.closePath();x.fillStyle="#fff";x.fill()}
+ wBtn();requestAnimationFrame(function(){wdraw(t)})}
 var PE={"💵":"5418261098291815736","🏦":"5832240029446971049","🎁":"5927029738626359516","👤":"5843973755545590553","✅":"5938109560249127910","🎉":"5832433801191498078","💳":"5888625992196431593","👑":"5830144944399981619"},PES=/(💵|🏦|🎁|👤|✅|🎉|💳|👑)/;
 function peWalk(n){if(n.nodeType==3){var p=n.parentNode;if(!p||!PES.test(n.nodeValue)||/^(OPTION|SCRIPT|STYLE|TEXTAREA|TITLE)$/.test(p.nodeName)||(p.classList&&(p.classList.contains("pe")||p.classList.contains("pe-fb"))))return;
  var fr=document.createDocumentFragment();n.nodeValue.split(PES).forEach(function(t,i){if(i%2){var s=document.createElement("span");s.className="pe";s.innerHTML='<img src="/api/art/'+PE[t]+'?t=1" alt="" onerror="this.outerHTML=\'<span class=pe-fb>'+t+'</span>\'">';fr.appendChild(s)}else if(t)fr.appendChild(document.createTextNode(t))});p.replaceChild(fr,n)}
