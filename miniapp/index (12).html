@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>گیفت‌هاب</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="/lottie.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#07090f;--card:#111522;--card2:#181d2e;--line:#242a40;--ink:#eef1fb;--mut:#8a91ab;--mint:#5eead4;--mint2:#2dd4bf;--p1:#6366f1;--p2:#a855f7;--o:#fb923c;--bad:#f87171;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 Vazirmatn,Tahoma,sans-serif}
+body{padding:calc(env(safe-area-inset-top,0px) + 70px) 14px 110px;background:radial-gradient(circle at 80% -10%,#12343a 0,transparent 45%),var(--bg);min-height:100vh}
+header{position:fixed;top:0;left:0;right:0;z-index:5;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 8px;display:flex;justify-content:space-between;align-items:center;background:rgba(7,9,15,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:19px;letter-spacing:.5px;color:var(--mint)}.brand small{display:block;font-size:11px;color:var(--mut);font-weight:400;line-height:1}
+.pill{background:var(--card);border:1px solid #4a3d1c;color:#fcd34d;border-radius:99px;padding:3px 12px;font-weight:800;font-size:14px}
+main{max-width:560px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,var(--p1),var(--p2) 60%,var(--o));border:0;padding:20px}.hero h2{margin:0;font-size:22px}.hero p{margin:2px 0 0;opacity:.85;font-size:13px}
+.seg{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:5px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-weight:600;padding:10px 0;border-radius:15px}
+.seg .on{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff}
+.tools{display:flex;gap:8px;margin-bottom:12px}
+input,select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:11px 14px;font:inherit;width:100%}
+select{width:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g{border-radius:22px;padding:10px;border:1px solid var(--line);text-align:center;position:relative;overflow:hidden}
+.g .tag{position:absolute;top:10px;right:10px;background:var(--o);color:#1b1004;font-size:11px;font-weight:800;border-radius:99px;padding:0 10px;z-index:1}
+.art{height:104px;display:grid;place-items:center;font-size:56px}.art>*{width:92px;height:92px;object-fit:contain}
+.g b{display:block;font-size:14px}.g small{color:var(--mut)}.pr{color:var(--mint);font-weight:800;margin-top:2px}
+.btn{width:100%;border:0;border-radius:16px;padding:13px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(135deg,#5b7cfa,#7c5cf0)}
+.btn.mint{background:linear-gradient(135deg,var(--mint),var(--mint2));color:#06312c}.btn.bad{background:none;border:1px solid var(--bad);color:var(--bad)}.btn:disabled{opacity:.5}
+.row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.row span{color:var(--mut)}.row b{color:var(--mint)}
+.empty{text-align:center;color:var(--mut);padding:36px 0}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:5;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px))}
+nav div{max-width:560px;margin:auto;display:flex;background:rgba(17,21,34,.95);border:1px solid var(--line);border-radius:28px;padding:6px;backdrop-filter:blur(10px)}
+nav button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:12px;font-weight:600;padding:7px 0;border-radius:22px}
+nav button i{display:block;font-style:normal;font-size:21px;line-height:1.2}nav .on{color:var(--mint);background:rgba(94,234,212,.12);box-shadow:inset 0 0 0 1px rgba(94,234,212,.35)}
+#sh{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:none;align-items:flex-end}#sh.on{display:flex}
+#sb{width:100%;max-width:560px;margin:auto;background:var(--card2);border-radius:28px 28px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));max-height:90vh;overflow:auto}
+#sb .g{margin-bottom:12px;padding:16px}#sb .art{height:130px}#sb .art>*{width:120px;height:120px}
+
+.own{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px 14px;margin-bottom:12px}
+.av{width:52px;height:52px;flex:none;border-radius:50%;background:#12343a;color:var(--mint);display:grid;place-items:center;font-weight:800;font-size:20px;position:relative;overflow:hidden;flex:none}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.own b{display:block;line-height:1.3}.own small{display:block;color:var(--mut)}
+.pe{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.22em}.pe img{width:100%;height:100%;object-fit:contain}
+.hist{display:flex;gap:6px;overflow-x:auto;padding:8px 2px 2px}.hist i{font-style:normal;border:2px solid;border-radius:14px;padding:1px 10px;font-weight:800;font-size:13px;flex:none;background:rgba(255,255,255,.04)}
+.pl{display:flex;align-items:center;gap:10px}.pl small{display:block;color:var(--mut)}
+.bn{position:relative;height:128px;border-radius:30px;padding:16px 20px;margin-bottom:14px;overflow:hidden;display:flex;align-items:flex-end;border:1px solid rgba(255,255,255,.18)}
+.bn b{font-size:30px;font-weight:800;letter-spacing:.5px;position:relative}
+.bn.tr{background:linear-gradient(135deg,#34d399,#0f766e);cursor:pointer}.btn.up{background:linear-gradient(135deg,#22c55e,#16a34a)}.btn.dn{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.bn.rk{background:linear-gradient(135deg,#7fb3f5,#3d79d6);cursor:pointer}.bn.off{background:#2a2d38;color:#8d93a8}
+.bn .bt1{position:absolute;top:14px;right:16px;background:#fff;color:#e27a3a;border-radius:14px;padding:2px 12px;font-weight:800;font-size:13px}.bn.off .bt1{background:#3b3f4d;color:#aeb4c8}
+.bn .big{position:absolute;left:18px;top:8px;font-size:84px;line-height:1;transform:rotate(-8deg)}
+.bn .ch{position:absolute;font-style:normal;background:#22c55e;color:#fff;font-weight:800;font-size:15px;padding:0 10px;border-radius:9px}
+.pl{padding:10px 12px;border-radius:18px;margin-bottom:8px;background:#0b0e16;border:1px solid var(--line)}.pl.win{background:#12315c;border-color:#3b82f6}.pl.lose{background:#3a1519;border-color:#f87171}
+#rk,#bm{position:absolute;left:0;top:0;width:110px;height:110px;pointer-events:none;display:none}#bm{width:140px;height:140px}#rk>*,#bm>*{width:100%;height:100%;object-fit:contain}
+#toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:var(--ink);color:#07090f;padding:8px 18px;border-radius:99px;font-weight:600;z-index:30;opacity:0;transition:.25s;pointer-events:none;max-width:90%;text-align:center}#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header><div class="brand">گیفت‌هاب<small>GIFT HUB</small></div><div class="pill" id="bal">💵 …</div></header>
+<main id="app"></main>
+<nav><div id="nav"></div></nav>
+<div id="sh"><div id="sb"></div></div>
+<div id="toast"></div>
+<script>
+var tg=window.Telegram&&Telegram.WebApp,tab="gift",sub="store",ME={},MK=[],MINE=[],q="",sort="new",ty="";
+if(tg){tg.ready();tg.expand();try{tg.setHeaderColor("#07090f");tg.setBackgroundColor("#07090f")}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function f(n){return Number(n||0).toLocaleString("fa-IR")}
+function toast(t){var x=$("toast");x.textContent=t;x.className="on";setTimeout(function(){x.className=""},2200)}
+function hap(t){try{tg.HapticFeedback.notificationOccurred(t)}catch(e){}}
+function num(s){s=String(s||"").replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace(/[,٬،\s]/g,"").toLowerCase();var m=s.match(/^(\d+(?:\.\d+)?)(k|m|کا|ک|میلیون|میل)?$/);if(!m)return 0;var u={k:1e3,"کا":1e3,"ک":1e3,m:1e6,"میلیون":1e6,"میل":1e6}[m[2]]||1;return Math.round(m[1]*u)}
+function api(p,b){return fetch(p,{method:"POST",headers:{"Content-Type":"application/json","X-Init-Data":tg?tg.initData:""},body:JSON.stringify(b||{})}).then(function(r){return r.json()}).catch(function(){return{ok:false,err:"ارتباط با سرور برقرار نشد"}})}
+function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function artEl(c){return'<div class="art" data-k="'+c+'" data-c="'+c+'"><img src="/api/art/'+c+'?t=1" alt="" onerror="artFail(this)"></div>'}
+function artFail(i){var a=i.parentNode;a.textContent="🎁";a.dataset.c=a.dataset.k;loadArt(a.parentNode,true)}
+function loadArt(root,force,play){var live=!!(root&&root.id=="sb")||!!play;if(!live&&!force)return;(root||document).querySelectorAll(".art[data-c]").forEach(function(el){var c=el.dataset.c;delete el.dataset.c;
+ fetch("/api/art/"+c).then(function(r){if(!r.ok)throw 0;var t=r.headers.get("content-type")||"";
+  if(t.indexOf("json")>-1)return r.json().then(function(j){el.textContent="";var an=lottie.loadAnimation({container:el,renderer:"svg",loop:true,autoplay:live,animationData:j});el._an=an;if(!live)an.goToAndStop(90,true)});
+  return r.blob().then(function(b){var u=URL.createObjectURL(b);el.innerHTML=t.indexOf("video")>-1?'<video src="'+u+'" autoplay loop muted playsinline></video>':'<img src="'+u+'" alt="">'})}).catch(function(){})})}
+function card(x,mode){var h=hue(x.type);return'<div class="g" data-id="'+x.id+'" data-m="'+mode+'" style="background:radial-gradient(circle at 50% 30%,hsl('+h+' 45% 28%),hsl('+h+' 35% 12%))">'+(x.price?'<span class="tag">'+(mode=="mk"?"فروش فوری":"برای فروش")+'</span>':"")+artEl(x.code)+'<b>'+esc(x.model)+'</b><small>'+esc(x.type)+' · #'+f(x.tag)+'</small><div class="pr">💵 '+f(x.price||x.value)+'</div></div>'}
+function nav(){$("nav").innerHTML=[["acc","👤","حساب کاربری"],["games","🎮","بازی‌ها"],["gift","🎁","گیفت"],["bank","🏦","بانک"]].map(function(t){return'<button data-t="'+t[0]+'" class="'+(tab==t[0]||((tab=="rocket"||tab=="trade")&&t[0]=="games")?"on":"")+'"><i>'+t[1]+'</i>'+t[2]+'</button>'}).join("")}
+function head(){$("bal").textContent="💵 "+f(ME.balance)}
+function load(){return api("/api/me").then(function(m){if(m.ok===false){$("app").innerHTML='<div class="empty">'+esc(m.err)+'</div>';return}ME=m;head()})}
+function go(){nav();head();var h=$("app");if(tab!="rocket")RK.run=false;if(tab!="trade")TR.run=false;if(tab=="trade"){tradeView();return}
+ if(tab=="games"){h.innerHTML='<div class="bn rk" data-g="rocket"><span class="bt1">🔥 پرطرفدار</span><i class="ch" style="top:14px;left:34%;transform:rotate(14deg)">×2.80</i><i class="ch" style="top:96px;left:30%;transform:rotate(8deg)">×1.17</i><i class="ch" style="top:56px;left:8%;transform:rotate(-12deg)">×1.42</i><span class="big">🚀</span><b>موشک</b></div><div class="bn tr" data-g="trade"><span class="bt1">جدید</span><i class="ch" style="top:16px;left:34%;transform:rotate(-8deg)">▲ ۱.۹×</i><i class="ch" style="top:84px;left:12%;background:#ef4444;transform:rotate(10deg)">▼ ۱.۹×</i><span class="big">📈</span><b>ترید</b></div>';return}
+ if(tab=="rocket"){rocketView();return}
+ if(tab=="acc"){h.innerHTML='<div class="card hero"><h2>'+esc(ME.name||"کاربر")+'</h2><p>'+(ME.username?"@"+esc(ME.username)+" · ":"")+'ID '+ME.id+'</p></div><div class="card"><div class="row"><span>موجودی کیف پول</span><b>💵 '+f(ME.balance)+'</b></div><div class="row"><span>موجودی بانک</span><b>🏦 '+f(ME.bank)+'</b></div><div class="row"><span>تعداد گیفت‌ها</span><b>'+f(ME.gifts)+' از '+f(ME.slots)+'</b></div><div class="row"><span>ارزش کل گیفت‌ها</span><b>💵 '+f(ME.worth)+'</b></div><div class="row"><span>در حال فروش</span><b>'+f(ME.selling)+'</b></div></div>';return}
+ if(tab=="bank"){bankView();return}
+ var s='<div class="card hero"><h2>گیفت‌ها</h2><p>بخر، بفروش یا قیمت بذار</p></div><div class="seg">'+[["store","فروشگاه"],["mine","گیفت‌های من"],["act","فعالیت"]].map(function(t){return'<button data-s="'+t[0]+'" class="'+(sub==t[0]?"on":"")+'">'+t[1]+'</button>'}).join("")+'</div>';
+ if(sub=="store"){var types=[];MK.forEach(function(x){if(types.indexOf(x.type)<0)types.push(x.type)});
+  var l=MK.filter(function(x){return(!ty||x.type==ty)&&(x.type+x.model+x.tag).toLowerCase().indexOf(q.toLowerCase())>-1});
+  l.sort(function(a,b){return sort=="lo"?a.price-b.price:sort=="hi"?b.price-a.price:b.id-a.id});
+  s+='<div class="tools"><input id="q" placeholder="جستجوی گیفت…" value="'+esc(q)+'"><select id="so"><option value="new">جدیدترین</option><option value="lo"'+(sort=="lo"?" selected":"")+'>ارزان‌ترین</option><option value="hi"'+(sort=="hi"?" selected":"")+'>گران‌ترین</option></select></div><div class="tools"><select id="ty"><option value="">همه‌ی کالکشن‌ها</option>'+types.map(function(t){return'<option'+(t==ty?" selected":"")+'>'+esc(t)+'</option>'}).join("")+'</select></div>';
+  s+=l.length?'<div class="grid">'+l.map(function(x){return card(x,"mk")}).join("")+'</div>':'<div class="empty">فعلاً گیفتی برای فروش نیست</div>'}
+ else if(sub=="mine")s+=MINE.length?'<div class="grid">'+MINE.map(function(x){return card(x,"my")}).join("")+'</div>':'<div class="empty">هنوز گیفتی نداری؛ از بات گیفت باکس بخر 🎁</div>';
+ else s+='<div class="card" id="act"><div class="empty">…</div></div>';
+ h.innerHTML=s;loadArt(h);
+ if(sub=="act")api("/api/activity").then(function(r){var K={list:"ثبت برای فروش",buy:"خرید",sold:"فروش",unlist:"لغو فروش"};$("act").innerHTML=(r.items||[]).length?r.items.map(function(x){return'<div class="row"><span>'+(K[x.kind]||x.kind)+' #'+f(x.gift_id)+'</span><b>💵 '+f(x.price)+'</b></div>'}).join(""):'<div class="empty">هنوز فعالیتی نیست</div>'});
+ var qi=$("q");if(qi)qi.oninput=function(){q=qi.value;var p=qi.selectionStart;go();var n=$("q");n.focus();n.setSelectionRange(p,p)};
+ if($("so"))$("so").onchange=function(){sort=this.value;go()};if($("ty"))$("ty").onchange=function(){ty=this.value;go()}}
+function bankView(){$("app").innerHTML='<div class="empty">…</div>';api("/api/bank").then(function(b){ME.balance=b.balance;head();var h;
+ if(!b.acc)h='<div class="card hero"><h2>بانک</h2><p>برای افتتاح حساب '+f(b.fee)+' 💵 لازمه</p></div><div class="card"><button class="btn mint" data-a="open">افتتاح حساب</button></div>';
+ else h='<div class="card hero"><p>موجودی بانک</p><h2>🏦 '+f(b.bank)+'</h2><p>شماره حساب: '+esc(b.acc)+'</p></div><div class="card"><div class="row"><span>درصد سود روزانه</span><b>'+(b.rate*100).toLocaleString("fa-IR")+'٪</b></div><div class="row"><span>سود امشب</span><b>💵 '+f(b.daily)+'</b></div></div><div class="card"><input id="amt" inputmode="numeric" placeholder="مبلغ (مثلاً ۵۰۰k یا ۲m)" style="margin-bottom:10px"><div class="grid"><button class="btn mint" data-a="deposit">واریز</button><button class="btn" data-a="withdraw">برداشت</button></div></div><div class="card">'+((b.tx||[]).length?b.tx.map(function(x){return'<div class="row"><span>'+(x.kind=="deposit"?"واریز":x.kind=="withdraw"?"برداشت":esc(x.kind))+'</span><b>'+f(x.amount)+'</b></div>'}).join(""):'<div class="empty">تراکنشی نیست</div>')+'</div>';
+ $("app").innerHTML=h})}
+function sheet(h){$("sb").innerHTML=h;$("sh").className="on";loadArt($("sb"))}
+function shut(){$("sh").className=""}
+$("sh").onclick=function(e){if(e.target.id=="sh")shut()};
+function refresh(){return Promise.all([load(),api("/api/market"),api("/api/mine")]).then(function(r){MK=r[1].items||[];MINE=r[2].items||[];go()})}
+function detail(x,m){var mine=m=="my"||x.mine;
+ var rows='<div class="row"><span>کالکشن</span><b>'+esc(x.type)+'</b></div><div class="row"><span>مدل</span><b>'+esc(x.model)+'</b></div><div class="row"><span>آیدی گیفت</span><b>#'+f(x.tag)+'</b></div><div class="row"><span>ارزش بازار</span><b>💵 '+f(x.value)+'</b></div><div class="row"><span>کمیابی</span><b>'+esc(x.rarity)+'</b></div>'+(x.price?'<div class="row"><span>قیمت</span><b>💵 '+f(x.price)+'</b></div>':"")+"";
+ var act=!mine?'<button class="btn" data-a="buy" data-id="'+x.id+'" data-p="'+x.price+'">خرید با 💵 '+f(x.price)+'</button>':x.price?'<button class="btn bad" data-a="unlist" data-id="'+x.id+'">لغو فروش</button>':'<input id="pr" inputmode="numeric" placeholder="قیمت فروش (مثلاً ۱۲m)" style="margin-bottom:10px"><button class="btn mint" data-a="list" data-id="'+x.id+'">ثبت برای فروش</button>';
+ var h=hue(x.type);sheet('<div class="g" style="background:radial-gradient(circle at 50% 30%,hsl('+h+' 45% 28%),hsl('+h+' 35% 12%))">'+artEl(x.code)+'<b style="font-size:18px">'+esc(x.model)+'</b><small>'+esc(x.type)+' · #'+f(x.tag)+'</small></div><div class="card" style="padding:4px 14px">'+rows+'</div><div id="own"></div>'+act);ownerCard(x.owner_id)}
+function ownerCard(i){api("/api/owner",{id:i}).then(function(o){var el=$("own");if(!el||!o.ok)return;var nm=o.name||(o.user?"@"+o.user:"کاربر");el.innerHTML='<div class="own" data-u="'+esc(o.user)+'"><div class="av">'+esc(nm.charAt(0))+'<img src="/api/avatar/'+o.id+'" onerror="this.remove()" alt=""></div><div><small>مالک گیفت</small><b>'+esc(nm)+'</b><small dir="ltr">'+(o.user?"@"+esc(o.user)+" · ":"")+'ID '+o.id+'</small></div></div>'})}
+document.addEventListener("click",function(e){var el=e.target.closest("[data-t],[data-s],[data-a],.g[data-id],.own[data-u],[data-g]");if(!el)return;var d=el.dataset;
+ if(d.a=="tup"||d.a=="tdn"){tAct(d.a,el);return}if(d.g){tab=d.g;go();window.scrollTo(0,0);return}if(d.a=="gback"){tab="games";go();return}if(d.a=="rbet"||d.a=="rcash"){rkAct(d.a,el);return}
+ if(el.className=="own"){if(d.u&&tg)tg.openTelegramLink("https://t.me/"+d.u);return}
+ if(d.t){tab=d.t;go();window.scrollTo(0,0);return}
+ if(d.s){sub=d.s;go();return}
+ if(!d.a&&d.id){var id=+d.id,x=(d.m=="mk"?MK:MINE).filter(function(z){return z.id==id})[0];if(x)detail(x,d.m);return}
+ var a=d.a,btn=el;
+ if(a=="open"||a=="deposit"||a=="withdraw"){btn.disabled=true;var p=a=="open"?api("/api/bank/open"):(function(){var n=num($("amt").value);if(!n){toast("مبلغ معتبر وارد کن");btn.disabled=false;return null}return api("/api/bank/move",{kind:a,amount:n})})();if(!p)return;
+  p.then(function(r){btn.disabled=false;if(r.ok){hap("success");toast("انجام شد ✅");load().then(bankView)}else{hap("error");toast(r.err||"خطا")}});return}
+ var body={id:+d.id};
+ if(a=="list"){body.price=num($("pr").value);if(!body.price){toast("قیمت معتبر وارد کن");return}}
+ if(a=="buy")body.price=+d.p;
+ btn.disabled=true;
+ api("/api/"+a,body).then(function(r){btn.disabled=false;if(r.ok){hap("success");shut();toast(a=="buy"?"خرید انجام شد 🎉":a=="list"?"برای فروش ثبت شد":"فروش لغو شد");refresh()}else{hap("error");toast(r.err||"خطا")}})});
+var K=.12,RK={st:null,at:0,run:false,k:"",sig:"",pt:null,t:0,rl:0,lt:0,hold:0,tok:0,nv:""};
+function col(m){return m<2?"#5eead4":m<5?"#a78bfa":m<10?"#fbbf24":"#f87171"}
+function dec(s){return parseFloat(String(s||"").replace(/[۰-۹]/g,function(d){return"۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).replace("٫","."))||0}
+function mNow(){var s=RK.st;if(!s)return 1;if(s.phase=="fly")return Math.exp(K*(s.elapsed+(performance.now()-RK.at)/1000));return s.phase=="crash"?s.crash:1}
+function rocketView(){RK.st=null;RK.k="";RK.sig="";RK.pt=null;RK.rid="";$("app").innerHTML='<div class="seg"><button data-a="gback" style="flex:none;padding:10px 18px">‹ بازی‌ها</button><button class="on" style="cursor:default">🚀 موشک</button></div><div class="card" style="padding:8px"><div style="position:relative"><canvas id="cv" style="width:100%;height:300px;display:block"></canvas><div id="rkw"><div id="rk" class="art"></div><div id="bm" class="art" data-c="5938458195629445238"></div></div></div><div id="hist" class="hist"></div></div><div class="card"><div class="tools"><input id="ra" inputmode="numeric" placeholder="مبلغ شرط (حداقل ۱، مثلاً ۵۰۰k)"></div><button id="rb" class="btn mint" data-a="rbet">ثبت شرط</button></div><div id="rp"><div class="card empty">…</div></div>';var t=++RK.tok;RK.run=true;loadArt($("rkw"),true,true);poll(t);draw(t)}
+function poll(t){if(!RK.run||t!=RK.tok)return;api("/api/rocket/state").then(function(s){if(!RK.run||t!=RK.tok)return;if(s.ok){if(performance.now()<RK.hold&&RK.st&&RK.st.mine&&(!s.mine||(RK.st.mine.at&&!s.mine.at)))s.mine=RK.st.mine;RK.st=s;RK.at=performance.now();ME.balance=s.balance;head();rkUI(s);var r=$("rk");if(s.rocket&&r&&RK.rid!=s.rocket){RK.rid=s.rocket;if(r._an){r._an.destroy();r._an=null}r.innerHTML="";r.dataset.c=s.rocket;loadArt($("rkw"),true,true)}}}).then(function(){setTimeout(function(){poll(t)},350)})}
+function rkUI(s){var sig=JSON.stringify([s.bets,s.phase,s.hist]);if(sig==RK.sig)return;RK.sig=sig;
+ $("hist").innerHTML=s.hist.map(function(v){var c=col(v);return'<i style="color:'+c+';border-color:'+c+'">'+v.toFixed(2)+'×</i>'}).join("");
+ var rk=function(b){return b.at?0:s.phase=="crash"?2:1};
+ var o=s.bets.slice().sort(function(a,b){return rk(a)-rk(b)||(a.at?b.win-a.win:b.amount-a.amount)});
+ $("rp").innerHTML=o.length?o.map(function(b){var r=rk(b);return'<div class="pl'+(r==0?" win":r==2?" lose":"")+'"><div class="av" style="width:40px;height:40px;font-size:16px">'+esc(b.name.charAt(0))+'<img src="/api/avatar/'+b.id+'" onerror="this.remove()" alt=""></div><div style="flex:1"><b>'+esc(b.name)+'</b><small>💵 '+f(b.amount)+'</small></div>'+(r==0?'<b style="color:#93c5fd">+'+f(b.win)+' · '+b.at.toFixed(2)+'×</b>':r==2?'<b style="color:var(--bad)">−'+f(b.amount)+'</b>':'<span style="color:var(--mut)">…</span>')+'</div>'}).join(""):'<div class="card empty">هنوز کسی شرط نبسته</div>'}
+function rkBtn(){var b=$("rb"),s=RK.st;if(!b||!s)return;var mi=s.mine,t,dis=false,a="rbet",m=mNow(),k,now=performance.now();
+ if(s.phase=="wait"){t=mi?"شرط ثبت شد ✓":"ثبت شرط";dis=!!mi}
+ else if(mi&&!mi.at&&s.phase=="fly"){a="rcash"}
+ else if(mi&&mi.at){t="برداشت شد ✅ +"+f(mi.win)+" 💵";dis=true}
+ else{t=s.phase=="crash"&&mi?"باختی 💥":"منتظر راند بعدی…";dis=true}
+ if(a=="rcash"){if(RK.k!="rcash"){RK.k="rcash";RK.nv="";b.innerHTML='برداشت 💵 <span id="rbn"></span>';b.dataset.a=a;b.disabled=false}var n=$("rbn"),v=f(Math.floor(mi.amount*m));if(n&&RK.nv!=v&&now-RK.lt>60){RK.lt=now;RK.nv=v;n.textContent=v}return}
+ k=t+a+dis;if(RK.k!=k){RK.k=k;b.textContent=t;b.dataset.a=a;b.disabled=dis}}
+function rkAct(a,b){var amt=num($("ra").value),m=mNow(),old=RK.st&&RK.st.mine;
+ if(a=="rbet"){if(!amt){toast("مبلغ معتبر وارد کن");return}if(RK.st)RK.st.mine={amount:amt,at:0,win:0}}
+ else if(RK.st&&old){RK.st.mine={amount:old.amount,at:m,win:Math.floor(old.amount*m)}}
+ else return;
+ RK.k="";RK.hold=performance.now()+1800;tap();
+ (a=="rbet"?api("/api/rocket/bet",{amount:amt}):api("/api/rocket/cash",{m:m})).then(function(r){RK.k="";if(r.ok){hap("success");if(a!="rbet"&&RK.st&&RK.st.mine){RK.st.mine.at=r.at;RK.st.mine.win=r.win}toast(a=="rbet"?"شرط ثبت شد 🚀":"برداشت شد: "+f(r.win)+" اسکناس")}else{RK.hold=0;if(RK.st)RK.st.mine=old;hap("error");toast(r.err||"خطا")}})}
+function cvs(c,w,h,d){var W=Math.round(w*d),H=Math.round(h*d);if(c.width!=W||c.height!=H){c.width=W;c.height=H}var x=c.getContext("2d");x.setTransform(d,0,0,d,0,0);x.globalAlpha=1;x.shadowBlur=0;x.setLineDash([]);x.textAlign="center";x.clearRect(0,0,w,h);return x}
+function vis(el,on){if(!el)return;var k=on?"block":"none";if(el.style.display!=k){el.style.display=k;if(el._an){on?el._an.play():el._an.pause()}}}
+function tap(){try{tg.HapticFeedback.impactOccurred("medium")}catch(e){}}
+function draw(t){if(!RK.run||t!=RK.tok)return;var c=$("cv"),s=RK.st;if(c&&s){var m=mNow(),d=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight,x,i,now=performance.now(),dt=Math.min(.1,(now-(RK.t||now))/1000),ph=s.phase,pal=["#c9cde3","#b9a7e6","#e3c4b2","#a9b8d8"];RK.t=now;
+ x=cvs(c,w,h,d);x.textAlign="center";x.textBaseline="middle";
+ if(!RK.pt){RK.pt=[];for(i=0;i<44;i++)RK.pt.push({x:Math.random()*w,y:Math.random()*h,r:1.5+Math.random()*2.6,v:.6+Math.random()*.8,c:pal[i%4]})}
+ var sp=ph=="fly"?45+170*Math.min(1,Math.log(m)/Math.log(30)):ph=="wait"?22:0;
+ RK.pt.forEach(function(q){q.y+=sp*q.v*dt;if(q.y>h+8){q.y=-8;q.x=Math.random()*w}x.fillStyle=q.c;x.globalAlpha=.75;x.beginPath();x.ellipse(q.x,q.y,q.r,q.r*(1+sp/90),0,0,7);x.fill()});x.globalAlpha=1;
+ var rk=$("rk"),bm=$("bm"),ry=h*.34,wob=Math.sin(now/260)*4,useSt=!!s.rocket;vis(rk,ph=="fly"&&useSt);if(bm&&ph!="crash")vis(bm,false);
+ if(ph=="wait"){var left=Math.max(0,s.left-(now-RK.at)/1000);x.lineWidth=9;x.lineCap="round";x.strokeStyle="#242a40";x.beginPath();x.arc(w/2,h/2,82,0,7);x.stroke();x.strokeStyle="#5eead4";x.beginPath();x.arc(w/2,h/2,82,-1.5708,-1.5708+6.2832*(left/5));x.stroke();x.fillStyle="#eef1fb";x.font="800 72px Vazirmatn,sans-serif";x.fillText(f(Math.ceil(left)),w/2,h/2+4);x.font="600 14px Vazirmatn,sans-serif";x.fillStyle="#8a91ab";x.fillText("زمان ثبت شرط",w/2,h-14)}
+ else{var cl=col(m),p=Math.min(1,Math.log(m)/Math.log(60)),n=40,k,hx=18,hy=h-26,q;x.lineWidth=5;x.lineCap="round";x.strokeStyle=cl;x.shadowColor=cl;x.shadowBlur=14;x.beginPath();for(k=0;k<=n;k++){q=p*k/n;hx=18+(w-36)*q;hy=h-26-110*Math.pow(q,1.6);k?x.lineTo(hx,hy):x.moveTo(hx,hy)}x.stroke();x.shadowBlur=0;
+  var cx=Math.min(w-50,Math.max(50,hx)),cy=hy-36+wob;
+  if(ph=="fly"){if(useSt&&rk){rk.style.left=(cx-55)+"px";rk.style.top=(cy-55)+"px";rk.style.transform="rotate("+((s.rot||0)+Math.sin(now/420)*3)+"deg)"}else{x.save();x.translate(cx,cy);x.rotate(-Math.PI/4+Math.sin(now/420)*.05);x.font="72px serif";x.fillText("🚀",0,0);x.restore()}}
+  else{if(bm&&bm.firstChild){vis(bm,true);bm.style.left=(cx-70)+"px";bm.style.top=(cy-70)+"px"}else{x.font="76px serif";x.fillText("💥",cx,cy)}}
+  x.font="800 "+(m>=100?54:66)+"px Vazirmatn,sans-serif";x.fillStyle=ph=="crash"?"#f87171":cl;x.fillText(m.toFixed(2)+"×",w/2,h*.2);if(ph=="crash"){x.font="600 15px Vazirmatn,sans-serif";x.fillText("موشک منفجر شد!",w/2,h*.2+44)}}}
+ rkBtn();requestAnimationFrame(function(){draw(t)})}
+var TR={st:null,at:0,run:false,k:"",sig:"",hold:0,tok:0};
+function tradeView(){TR.st=null;TR.k="";TR.sig="";$("app").innerHTML='<div class="seg"><button data-a="gback" style="flex:none;padding:10px 18px">‹ بازی‌ها</button><button class="on" style="cursor:default">📈 ترید</button></div><div class="card" style="padding:8px"><canvas id="tc" style="width:100%;height:270px;display:block"></canvas><div id="thist" class="hist"></div></div><div class="card"><div class="tools"><input id="ta" inputmode="numeric" placeholder="مبلغ شرط (حداقل ۱، مثلاً ۵۰۰k)"></div><div id="ts" style="text-align:center;color:var(--mut);margin-bottom:10px">…</div><div class="grid"><button id="tbu" class="btn up" data-a="tup">▲ بالا</button><button id="tbd" class="btn dn" data-a="tdn">▼ پایین</button></div></div><div id="tpl"><div class="card empty">…</div></div>';var t=++TR.tok;TR.run=true;tpoll(t);tdraw(t)}
+function tpoll(t){if(!TR.run||t!=TR.tok)return;api("/api/trade/state").then(function(s){if(!TR.run||t!=TR.tok)return;if(s.ok){if(performance.now()<TR.hold&&TR.st&&TR.st.mine&&!s.mine)s.mine=TR.st.mine;TR.st=s;TR.at=performance.now();ME.balance=s.balance;head();tUI(s)}}).then(function(){setTimeout(function(){tpoll(t)},300)})}
+function tUI(s){var sig=JSON.stringify([s.bets,s.phase,s.hist]);if(sig==TR.sig)return;TR.sig=sig;
+ $("thist").innerHTML=s.hist.map(function(v){var c=v.res=="up"?"#22c55e":v.res=="down"?"#ef4444":"#8a91ab";return'<i style="color:'+c+';border-color:'+c+'">'+(v.res=="up"?"▲ +":v.res=="down"?"▼ ":"= ")+v.pct.toFixed(2)+'%</i>'}).join("");
+ var rk=function(b){return s.phase!="end"?1:b.res=="win"?0:b.res=="tie"?1:2};
+ var o=s.bets.slice().sort(function(a,b){return rk(a)-rk(b)||(b.win-a.win)||(b.amount-a.amount)});
+ $("tpl").innerHTML=o.length?o.map(function(b){var r=rk(b),ar=b.dir=="up"?'<b style="color:#22c55e">▲</b>':'<b style="color:#ef4444">▼</b>';return'<div class="pl'+(s.phase=="end"?(b.res=="win"?" win":b.res=="lose"?" lose":""):"")+'"><div class="av" style="width:40px;height:40px;font-size:16px">'+esc(b.name.charAt(0))+'<img src="/api/avatar/'+b.id+'" onerror="this.remove()" alt=""></div><div style="flex:1"><b>'+esc(b.name)+'</b><small>💵 '+f(b.amount)+'</small></div>'+ar+(s.phase=="end"?(b.res=="win"?'<b style="color:#93c5fd;margin-right:8px">+'+f(b.win)+'</b>':b.res=="lose"?'<b style="color:var(--bad);margin-right:8px">−'+f(b.amount)+'</b>':'<b style="margin-right:8px">=</b>'):"")+'</div>'}).join(""):'<div class="card empty">هنوز کسی شرط نبسته</div>'}
+function tBtn(){var s=TR.st;if(!s||!$("ts"))return;var m=s.mine,ph=s.phase,t,dis=ph!="wait"||!!m,dn=m?(m.dir=="up"?"▲ بالا":"▼ پایین")+" · 💵 "+f(m.amount):"";
+ if(ph=="wait")t=m?"شرط ثبت شد: "+dn:"جهت قیمت رو انتخاب کن (برد "+s.payout+"×)";
+ else if(ph=="run")t=m?"شرط تو: "+dn+" — منتظر پایان راند":"راند در حال اجراست؛ منتظر راند بعدی…";
+ else t=m?(m.res=="win"?"بردی ✅ +"+f(m.win)+" 💵":m.res=="tie"?"مساوی شد؛ پولت برگشت":"باختی 💥"):"راند تموم شد";
+ var k=t+dis;if(TR.k!=k){TR.k=k;$("ts").textContent=t;$("tbu").disabled=dis;$("tbd").disabled=dis}}
+function tAct(a,b){var amt=num($("ta").value),dr=a=="tup"?"up":"down";if(!amt){toast("مبلغ معتبر وارد کن");return}
+ var old=TR.st&&TR.st.mine;if(TR.st)TR.st.mine={dir:dr,amount:amt,win:0,res:""};TR.k="";TR.hold=performance.now()+1800;tap();
+ api("/api/trade/bet",{amount:amt,dir:dr}).then(function(r){TR.k="";if(r.ok){hap("success");toast("شرط ثبت شد 📈")}else{TR.hold=0;if(TR.st)TR.st.mine=old;hap("error");toast(r.err||"خطا")}})}
+function tdraw(t){if(!TR.run||t!=TR.tok)return;var c=$("tc"),s=TR.st;if(c&&s){var d=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight,x,i,tp=s.tape,n=tp.length,now=performance.now(),ph=s.phase,run=ph!="wait";
+ x=cvs(c,w,h,d);x.textBaseline="middle";
+ var lo=Math.min.apply(null,tp),hi=Math.max.apply(null,tp);if(run){lo=Math.min(lo,s.p0);hi=Math.max(hi,s.p0)}var pd=(hi-lo)*.2||1;lo-=pd;hi+=pd;
+ var top=72,X=function(j){return 8+(w-16)*(100-n+j)/99},Y=function(v){return top+(h-top-14)*(1-(v-lo)/(hi-lo))};
+ var last=tp[n-1],up=run?last>=s.p0:true,cl=!run?"#8ea2ff":up?"#22c55e":"#ef4444";
+ x.strokeStyle="rgba(255,255,255,.06)";x.lineWidth=1;for(i=0;i<4;i++){x.beginPath();x.moveTo(0,top+(h-top-14)*i/3);x.lineTo(w,top+(h-top-14)*i/3);x.stroke()}
+ var g=x.createLinearGradient(0,top,0,h);g.addColorStop(0,cl+"55");g.addColorStop(1,cl+"00");
+ x.beginPath();tp.forEach(function(v,j){j?x.lineTo(X(j),Y(v)):x.moveTo(X(j),Y(v))});x.lineTo(X(n-1),h);x.lineTo(X(0),h);x.closePath();x.fillStyle=g;x.fill();
+ x.lineWidth=3;x.lineJoin="round";x.strokeStyle=cl;x.shadowColor=cl;x.shadowBlur=10;x.beginPath();tp.forEach(function(v,j){j?x.lineTo(X(j),Y(v)):x.moveTo(X(j),Y(v))});x.stroke();x.shadowBlur=0;
+ if(run){x.setLineDash([6,5]);x.strokeStyle="#fbbf24";x.lineWidth=1.5;x.beginPath();x.moveTo(0,Y(s.p0));x.lineTo(w,Y(s.p0));x.stroke();var mx=X(Math.max(0,n-1-s.run_n));x.beginPath();x.moveTo(mx,top-6);x.lineTo(mx,h);x.stroke();x.setLineDash([]);x.fillStyle="#fbbf24";x.font="600 12px Vazirmatn,sans-serif";x.textAlign="left";x.fillText("ورود "+s.p0.toFixed(2),Math.min(mx+6,w-100),Y(s.p0)-9)}
+ x.fillStyle="#fff";x.beginPath();x.arc(X(n-1),Y(last),5,0,7);x.fill();
+ x.textAlign="left";x.fillStyle="#eef1fb";x.font="800 38px Vazirmatn,sans-serif";x.fillText(last.toFixed(2),14,26);
+ if(run){var pc=(last-s.p0)/s.p0*100;x.font="700 15px Vazirmatn,sans-serif";x.fillStyle=cl;x.fillText((pc>=0?"▲ +":"▼ ")+pc.toFixed(2)+"%",14,56)}
+ var left=Math.max(0,s.left-(now-TR.at)/1000);x.textAlign="right";x.font="700 16px Vazirmatn,sans-serif";x.fillStyle="#8a91ab";x.fillText(ph=="wait"?"شروع تا "+f(Math.ceil(left))+" ثانیه":ph=="run"?"پایان تا "+f(Math.ceil(left))+" ثانیه":"پایان راند",w-14,26);
+ if(ph=="end"){x.textAlign="center";x.font="800 32px Vazirmatn,sans-serif";x.fillStyle=s.res=="up"?"#22c55e":s.res=="down"?"#ef4444":"#8a91ab";x.fillText(s.res=="up"?"رشد ▲":s.res=="down"?"افت ▼":"بدون تغییر",w/2,h*.5)}}
+ tBtn();requestAnimationFrame(function(){tdraw(t)})}
+var PE={"💵":"5418261098291815736","🏦":"5832240029446971049","🎁":"5927029738626359516","👤":"5843973755545590553","✅":"5938109560249127910","🎉":"5832433801191498078","💳":"5888625992196431593","👑":"5830144944399981619"},PES=/(💵|🏦|🎁|👤|✅|🎉|💳|👑)/;
+function peWalk(n){if(n.nodeType==3){var p=n.parentNode;if(!p||!PES.test(n.nodeValue)||/^(OPTION|SCRIPT|STYLE|TEXTAREA|TITLE)$/.test(p.nodeName)||(p.classList&&(p.classList.contains("pe")||p.classList.contains("pe-fb"))))return;
+ var fr=document.createDocumentFragment();n.nodeValue.split(PES).forEach(function(t,i){if(i%2){var s=document.createElement("span");s.className="pe";s.innerHTML='<img src="/api/art/'+PE[t]+'?t=1" alt="" onerror="this.outerHTML=\'<span class=pe-fb>'+t+'</span>\'">';fr.appendChild(s)}else if(t)fr.appendChild(document.createTextNode(t))});p.replaceChild(fr,n)}
+ else if(n.nodeType==1&&!/^(SCRIPT|STYLE)$/.test(n.nodeName)&&!n.classList.contains("pe")){Array.prototype.slice.call(n.childNodes).forEach(peWalk)}}
+new MutationObserver(function(ms){ms.forEach(function(m){Array.prototype.forEach.call(m.addedNodes,peWalk)})}).observe(document.body,{childList:true,subtree:true});
+refresh();
+</script>
+</body>
+</html>
