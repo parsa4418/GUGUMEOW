@@ -27,7 +27,7 @@ from flask import request, jsonify, Response, send_file
 
 MARKET_FEE_RATE = 0.0          # کارمزد فروش (مثلاً 0.02 = ۲٪) از فروشنده کم می‌شه
 MIN_PRICE, MAX_PRICE = 1_000, 100_000_000_000
-_art, _names, _av = {}, {}, {}
+_art, _names, _av, _unm = {}, {}, {}, {}
 # موشک‌ها: پک MeowieQ_StellarRockets؛ هر راند یکی‌شون تصادفی انتخاب می‌شه.
 # فقط یه موشک ثابت می‌خوای؟ توی Render متغیر ROCKET_EMOJI_ID رو بذار. خالی کردن لیست = 🚀 معمولی.
 ROCKETS = ["5870497334671976361", "5870559551568224733", "5870889353516951255", "5870506315448589899", "5872842481304870699", "5872888927081209304", "5870639274751172896", "5870876172262317485", "5870724289333829406", "5870823735006600994", "5870732810548945098", "5870723039498345368", "5870550815604744153", "5872739689852575759", "5870901826101981716", "5870690260307944550", "5870722704490897242", "5870520961287070072", "5870685759182217338", "5870931212268217669", "5870585132393440136", "5870685952455744603", "5870876455730161881", "5870958721533749076", "5870618289540964068", "5870669365292048004", "5870852678791209613", "5872770351624100932", "5870544940089482881", "5870838801751876665", "5870459594794346119", "5870592725895626826", "5870759301907226510", "5870885264708083615", "5870807676123882072", "5870644304157876866", "5870485703900535884", "5870462236199232445", "5870840085947097301", "5870851875632325259", "5870476405296340564", "5870476830498103731", "5870562094188864089", "5870820818723807767", "5870972276450533704", "5870955783776116644", "5870577302668059173", "5870956243337617042", "5870480008773907052", "5870781270664947166"]
@@ -40,6 +40,14 @@ ROCKET_ROT = float(os.environ.get("ROCKET_ROT", "0"))
 UI_EMOJI = {5938458195629445238, 5418261098291815736, 5832240029446971049, 5927029738626359516, 5843973755545590553,
             5938109560249127910, 5832433801191498078, 5888625992196431593, 5830144944399981619}
 _lk = threading.Lock()
+
+
+def _cap(d, n):
+    """کش‌های درون‌حافظه سقف دارن تا با گذشت زمان رم سرور پر نشه (قدیمی‌ترین‌ها اول حذف می‌شن)."""
+    if len(d) > n:
+        for k in list(d)[:len(d) - n]:
+            if k != "lottie":
+                d.pop(k, None)
 
 
 def init(app, N):
@@ -155,16 +163,24 @@ def init(app, N):
                     _art[key] = (gzip.decompress(raw), "application/json")
                 else:
                     _art[key] = (raw, "video/webm" if p.endswith(".webm") else "image/jpeg" if p.endswith(".jpg") else "image/webp")
+                _cap(_art, 600)
             except Exception as e:
                 logging.error("art %s: %s", code, e)
                 return "", 404
         b, m = _art[key]
         return Response(b, mimetype=m, headers={"Cache-Control": "public, max-age=86400"})
 
-    @route("/api/me")
+    NOUSER = {"ok": False, "err": "اول باید در بات /start بزنی."}
+
+    @route("/api/me", check=False)   # خود تابع وجود کاربر رو چک می‌کنه (یک کوئری کمتر)
     def me(uid, u, d):
-        N["apply_bank_interest"](uid)
+        try:
+            N["apply_bank_interest"](uid)
+        except Exception:
+            pass
         usr = N["get_user"](uid)
+        if not usr:
+            return NOUSER
         gs = N["get_user_gifts"](uid)
         ls = {l["instance_id"] for l, g in listings() if l["seller_id"] == uid}
         return {"ok": True, "id": uid, "name": u.get("first_name", ""), "username": usr.get("username"),
@@ -175,11 +191,17 @@ def init(app, N):
     @route("/api/market")
     def market(uid, u, d):
         ls = listings()
-        names, ids = {}, list({int(l["seller_id"]) for l, g in ls})
+        names, now = {}, time.time()
+        ids = [i for i in {int(l["seller_id"]) for l, g in ls} if i not in _unm or now - _unm[i][0] > 60]
         if ids:
             for r in sb().table("users").select("user_id,username").in_("user_id", ids).execute().data or []:
                 if r.get("user_id") is not None:
-                    names[int(r["user_id"])] = r.get("username") or f"ID {r['user_id']}"
+                    _unm[int(r["user_id"])] = (now, r.get("username") or f"ID {r['user_id']}")
+            _cap(_unm, 5000)
+        for l, g in ls:
+            i = int(l["seller_id"])
+            if i in _unm:
+                names[i] = _unm[i][1]
         return {"ok": True, "items": [gift_row(g, int(l["price"]), names.get(int(l["seller_id"]), f"ID {l['seller_id']}"))
                                       | {"mine": l["seller_id"] == uid, "owner_id": int(l["seller_id"])} for l, g in ls]}
 
@@ -202,6 +224,7 @@ def init(app, N):
             except Exception:
                 pass
             _names[i] = nm
+            _cap(_names, 5000)
         return {"ok": True, "id": i, "name": _names[i], "user": (usr.get("username") or "").lstrip("@")}
 
     @app.route("/api/avatar/<int:i>")
@@ -215,6 +238,7 @@ def init(app, N):
                     return "", 404
                 p = N["bot"].get_file(ph.photos[0][0].file_id).file_path
                 _av[i] = urlopen(f"https://api.telegram.org/file/bot{TOKEN}/{p}", timeout=15).read()
+                _cap(_av, 300)
             except Exception:
                 return "", 404
         return Response(_av[i], mimetype="image/jpeg", headers={"Cache-Control": "public, max-age=3600"})
@@ -289,10 +313,15 @@ def init(app, N):
             pass
         return {"ok": True}
 
-    @route("/api/bank")
+    @route("/api/bank", check=False)
     def bank(uid, u, d):
-        N["apply_bank_interest"](uid)
+        try:
+            N["apply_bank_interest"](uid)
+        except Exception:
+            pass
         usr = N["get_user"](uid)
+        if not usr:
+            return NOUSER
         bal = int(usr.get("bank_balance") or 0)
         acc = usr.get("bank_account_number")
         tx = N["_recent_bank_tx"](uid, 10) if acc else []
@@ -418,6 +447,7 @@ def init(app, N):
         c = bc.get(uid)
         if not c or time.time() - c[0] > 2:
             c = bc[uid] = (time.time(), N["get_balance"](uid))
+            _cap(bc, 5000)
         return c[1]
 
     @route("/api/rocket/state", check=False)
@@ -502,72 +532,98 @@ def init(app, N):
         return {"ok": True, "at": at, "win": win}
 
 
-    # ================= ترید (بالا / پایین) — راند مشترک، فقط با اسکناس =================
-    TWAIT, TRUN, TEND, PAYOUT = 5.0, 15.0, 3.0, 1.9    # ۵ ثانیه شرط، ۱۵ ثانیه راند؛ برد = ۱.۹ برابر (~۹۵٪ بازگشت)
-    TS = {"id": 0, "phase": "wait", "wait_end": 0.0, "start": 0.0, "p0": 100.0, "run_n": 0, "res": "", "bets": {}}
-    tape, thist, tl = [100.0], [], threading.Lock()
+    # ================= دایره (جکپات) — راند مشترک، فقط با اسکناس =================
+    # هر نفر مبلغ می‌ذاره و سهمش از دایره = مبلغ او ÷ مجموع؛ هر چی بیشتر بذاری بخش بزرگ‌تری داری.
+    # آخر راند دایره می‌چرخه و برنده (به نسبت سهم) کل جایزه رو می‌بره.
+    # اگه فقط یک نفر شرط بسته باشه، خود بات (NPC با اسم GUGU BET) هم‌مبلغ اون می‌ذاره و دایره نصف‌نصف می‌شه.
+    # اگه کسی شرط نبسته باشه راند برگزار نمی‌شه. پول GUGU BET از جیب کسی کم نمی‌شه (ریسکش با بات‌ه).
+    WWAIT, WSPIN, WEND, WFEE = 20.0, 5.0, 5.0, 0.0    # ۲۰ ثانیه شرط، ۵ ثانیه چرخش؛ WFEE = کارمزد (۰ = بدون کارمزد، مثلاً 0.05 = ۵٪)
+    NPC_ID, NPC_NAME = 0, "GUGU BET"
+    WS = {"id": 0, "phase": "wait", "wait_end": 0.0, "spin_end": 0.0, "bets": {}, "nc": 0, "win": None, "off": 0.5, "res": ""}
+    wl, whist = threading.Lock(), []
 
-    def step():  # زیر قفل tl؛ حرکت تصادفی قیمت (بدون سوگیری)، کمی برگشت به ۱۰۰
-        tape.append(round(max(1.0, tape[-1] + rnd.gauss(0, 0.30) + 0.02 * (100 - tape[-1])), 2))
-        del tape[:-100]
-        if TS["phase"] == "run":
-            TS["run_n"] += 1
+    def w_assign():  # زیر قفل wl؛ به هر شرکت‌کننده یک شماره‌ی ثابت (= یک رنگ ثابت) می‌ده
+        for b in WS["bets"].values():
+            if not b["pend"] and "ci" not in b:
+                b["ci"] = WS["nc"]
+                WS["nc"] += 1
 
-    def tloop():
+    def wloop():
         while True:
             try:
-                with tl:
-                    TS.update(id=TS["id"] + 1, phase="wait", wait_end=time.time() + TWAIT, run_n=0, res="", bets={})
-                while time.time() < TS["wait_end"]:
-                    time.sleep(0.25)
-                    with tl:
-                        step()
-                with tl:
-                    TS.update(phase="run", start=time.time(), p0=tape[-1], run_n=0)
-                while time.time() < TS["start"] + TRUN:
-                    time.sleep(0.25)
-                    with tl:
-                        step()
-                with tl:
-                    p0, p1 = TS["p0"], tape[-1]
-                    res = "up" if p1 > p0 else "down" if p1 < p0 else "tie"
-                    TS.update(phase="end", res=res)
-                    thist.insert(0, {"res": res, "pct": round((p1 - p0) / p0 * 100, 2)})
-                    del thist[20:]
-                    for uid, b in TS["bets"].items():
-                        if b["pend"]:
-                            continue
-                        b["res"] = "tie" if res == "tie" else "win" if b["dir"] == res else "lose"
-                        b["win"] = b["amount"] if b["res"] == "tie" else int(b["amount"] * PAYOUT) if b["res"] == "win" else 0
-                        if b["win"]:
-                            bg(credit, uid, b["win"])
-                        bg(settle_b, b)
-                time.sleep(TEND)
+                with wl:
+                    WS.update(id=WS["id"] + 1, phase="wait", wait_end=time.time() + WWAIT, spin_end=0.0, bets={}, nc=0,
+                              win=None, off=0.5, res="")
+                time.sleep(WWAIT)
+                with wl:
+                    w_assign()
+                    parts = sorted(((k, b) for k, b in WS["bets"].items() if not b["pend"]), key=lambda kv: kv[1]["ci"])
+                    tot = sum(b["amount"] for _, b in parts)
+                    if not parts:
+                        WS.update(phase="end", res="refund", win=None)
+                        wid = None
+                    else:
+                        if len(parts) == 1:   # فقط یک نفر اومده: GUGU BET هم‌مبلغ می‌ذاره
+                            ev = threading.Event()
+                            ev.set()
+                            npc = {"amount": parts[0][1]["amount"], "at": 0, "win": 0, "res": "", "bid": None, "pend": False,
+                                   "ev": ev, "auto": 0, "name": NPC_NAME, "ci": WS["nc"]}
+                            WS["nc"] += 1
+                            WS["bets"][NPC_ID] = npc
+                            parts.append((NPC_ID, npc))
+                            tot *= 2
+                        r, acc, wid = rnd.random() * tot, 0, parts[-1][0]
+                        for k, b in parts:
+                            acc += b["amount"]
+                            if r < acc:
+                                wid = k
+                                break
+                        pay = int(tot * (1 - WFEE))
+                        WS.update(phase="spin", spin_end=time.time() + WSPIN, win=wid, off=round(rnd.uniform(0.1, 0.9), 3), res="")
+                if wid is None:
+                    time.sleep(3)
+                    continue
+                time.sleep(WSPIN)
+                with wl:
+                    WS["phase"] = "end"
+                    if wid != NPC_ID:
+                        bg(credit, wid, pay)
+                    for k, b in parts:
+                        b["res"] = "win" if k == wid else "lose"
+                        b["win"] = pay if k == wid else 0
+                        if k != NPC_ID:
+                            bg(settle_b, b)
+                    wb = WS["bets"][wid]
+                    whist.insert(0, {"name": wb["name"], "pct": round(wb["amount"] / tot * 100, 1), "pot": pay})
+                    del whist[10:]
+                time.sleep(WEND)
             except Exception as e:
-                logging.exception("trade loop: %s", e)
+                logging.exception("wheel loop: %s", e)
                 time.sleep(2)
 
-    threading.Thread(target=tloop, daemon=True).start()
+    threading.Thread(target=wloop, daemon=True).start()
 
-    @route("/api/trade/state", check=False)
-    def tr_state(uid, u, d):
-        with tl:
-            now, ph = time.time(), TS["phase"]
-            m = TS["bets"].get(uid)
-            out = {"ok": True, "phase": ph, "payout": PAYOUT, "tape": tape[-100:], "run_n": TS["run_n"], "p0": TS["p0"],
-                   "res": TS["res"], "hist": thist[:14],
-                   "left": max(0.0, TS["wait_end"] - now) if ph == "wait" else max(0.0, TS["start"] + TRUN - now) if ph == "run" else 0,
-                   "mine": {k: m[k] for k in ("dir", "amount", "win", "res")} if m and not m["pend"] else None,
-                   "bets": [{"id": k, "name": b["name"], "dir": b["dir"], "amount": b["amount"], "win": b["win"], "res": b["res"]}
-                            for k, b in TS["bets"].items() if not b["pend"]][:30]}
+    @route("/api/wheel/state", check=False)
+    def wh_state(uid, u, d):
+        with wl:
+            w_assign()
+            now, ph = time.time(), WS["phase"]
+            rows = sorted(((k, b) for k, b in WS["bets"].items() if not b["pend"]), key=lambda kv: kv[1]["ci"])
+            tot = sum(b["amount"] for _, b in rows)
+            m = WS["bets"].get(uid)
+            shown = ph in ("spin", "end")
+            out = {"ok": True, "phase": ph, "round": WS["id"], "total": tot, "pay": int(tot * (1 - WFEE)), "spin": WSPIN, "res": WS["res"],
+                   "left": max(0.0, WS["wait_end"] - now) if ph == "wait" else 0,
+                   "spin_left": max(0.0, WS["spin_end"] - now) if ph == "spin" else 0,
+                   "win": WS["win"] if shown else None, "off": WS["off"] if shown else 0, "hist": whist[:5],
+                   "mine": {"amount": m["amount"]} if m and not m["pend"] else None,
+                   "bets": [{"id": k, "name": b["name"], "amount": b["amount"], "ci": b["ci"]} for k, b in rows[:100]]}
         out["balance"] = bal(uid)
         return out
 
-    @route("/api/trade/bet", check=False)
-    def tr_bet(uid, u, d):
-        amt, dr = int(d.get("amount", 0)), d.get("dir")
-        if dr not in ("up", "down"):
-            return {"ok": False, "err": "جهت نامعتبره."}
+    @route("/api/wheel/bet", check=False)
+    def wh_bet(uid, u, d):
+        amt = int(d.get("amount", 0))
         if not MIN_BET <= amt <= MAX_BET:
-            return {"ok": False, "err": f"مبلغ شرط باید بین {MIN_BET:,} و {MAX_BET:,} باشه."}
-        return place(TS, tl, uid, u, amt, {"dir": dr})
+            return {"ok": False, "err": f"مبلغ باید بین {MIN_BET:,} و {MAX_BET:,} باشه."}
+        return place(WS, wl, uid, u, amt, {})

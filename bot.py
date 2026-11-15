@@ -244,7 +244,9 @@ TRANSFER_MAX_AMOUNT = 250_000       # سقف هر بار انتقال
 TRANSFER_COOLDOWN_SECONDS = 30     # فاصله‌ی بین دو انتقال
 TEHRAN_TZ = ZoneInfo("Asia/Tehran")
 
-bot = telebot.TeleBot(BOT_TOKEN)
+# پیش‌فرض pyTelegramBotAPI فقط ۲ ترد برای اجرای هندلرها داره؛ یعنی هر لحظه بیشتر از ۲ پیام/دکمه همزمان پردازش نمی‌شد
+# و بقیه توی صف می‌موندن (کندی زیر فشار). با متغیر محیطی BOT_WORKER_THREADS قابل تغییره.
+bot = telebot.TeleBot(BOT_TOKEN, num_threads=max(2, int(os.environ.get("BOT_WORKER_THREADS", "16") or 16)))
 
 # ================== لاگ کندی‌ها (برای دیباک) ==================
 _BOOT_TIME = time.time()
